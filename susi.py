@@ -52,7 +52,8 @@ class Susi:
         doc = json.loads(msg)
         if doc["type"] == "ack" or doc["type"] == "dismiss":
             if self.finishCallbacks.has_key(doc["data"]["id"]):
-                self.finishCallbacks[doc["data"]["id"]](doc["data"])
+                if(hasattr(self.finishCallbacks[doc["data"]["id"]], '__call__')):
+                    self.finishCallbacks[doc["data"]["id"]](doc["data"])
                 del self.finishCallbacks[doc["data"]["id"]]
         elif doc["type"] == "consumerEvent":
             event = doc["data"]
